@@ -1,0 +1,10 @@
+{
+    "eBoreal": {
+        "dbConfig": {
+            "host": "localhost",
+            "port": 5984,
+            "dbProd": "mongodb+srv://eBoreal:meUybC8WnMYXPVCs@remod-beta.jfxgsol.mongodb.net/extension-data?retryWrites=true&w=majority",
+            "dbDev": "mongodb+srv://eBoreal:meUybC8WnMYXPVCs@remod-beta.jfxgsol.mongodb.net/test?retryWrites=true&w=majority"
+        }
+    }
+}

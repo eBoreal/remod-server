@@ -1,5 +1,7 @@
 // test routes
 const testRoutes = require('./test');
+const Comment=require("../schemas/Comment.js");
+const data_path='./data/test-data.json';
 
 const appRouter = (app, fs) => {
   // default
@@ -8,7 +10,8 @@ const appRouter = (app, fs) => {
   });
 
   // run our test route module
-  testRoutes(app, fs);
+  testRoutes(app, fs, data_path, Comment);
+  // dbRoutes(app, mongoose);
 };
 
 module.exports = appRouter;
