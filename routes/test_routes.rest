@@ -1,0 +1,49 @@
+GET http://localhost:3000/comments
+
+###
+
+POST http://localhost:3000/comments
+Content-Type: application/json
+
+{
+    "id": "0000000",
+    "url": "https://vitalik.ca/general/2022/07/13/networkstates.html",
+    "target": {
+        "innerText": "Network states can be viewed as an attempt at an ideological successor to libertarianism: Balaji",
+        "localName": "p",
+        "id": ""
+    },
+    "boxId": "0000000",
+    "commentText": "I am comment #1",
+    "author": "Emile Borel", 
+    "timeStamp": "1664750827",
+    "upvotes": "0"
+}
+
+
+### 
+
+GET http://localhost:3000/comments/633ed6fd694fc159434581e5
+
+###
+
+DELETE http://localhost:3000/comments/633ed6fd694fc159434581e5
+
+### 
+
+PATCH http://localhost:3000/comments/633f1d7697defc9bfe557fb1
+Content-Type: application/json
+
+{
+    "upvotes": "1"
+}
+
+
+### 
+
+GET http://localhost:3000/comments/boxes
+Content-Type: application/json
+
+{
+    "url": "https://vitalik.ca/general/2022/07/13/networkstates.html"
+}
