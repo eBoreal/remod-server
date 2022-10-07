@@ -27,7 +27,7 @@ GET http://localhost:3000/comments/633ed6fd694fc159434581e5
 
 ###
 
-DELETE http://localhost:3000/comments/633ed6fd694fc159434581e5
+DELETE http://localhost:3000/comments/633f1d7697defc9bfe557fb1
 
 ### 
 
@@ -47,3 +47,8 @@ Content-Type: application/json
 {
     "url": "https://vitalik.ca/general/2022/07/13/networkstates.html"
 }
+
+
+###
+
+GET http://localhost:3000/comments/boxes/https%3A%2F%2Fvitalik.ca%2Fgeneral%2F2022%2F07%2F13%2Fnetworkstates.html

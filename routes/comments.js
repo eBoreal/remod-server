@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
 })
 
 // Getting comments matching a specific url
-router.get('/boxes', getUrlComments, (req, res) => {
+router.get('/boxes/:url', getUrlComments, (req, res) => {
     res.json(res.comments)
 })
 
@@ -45,7 +45,8 @@ router.get('/boxes', getUrlComments, (req, res) => {
 async function getUrlComments(req, res, next) {
     let comments;
     try {
-        comments = await Comment.findByUrl(req.body.url)
+        console.log(req.params.url)
+        comments = await Comment.findByUrl(req.params.url)
         if (comments.length == 0) {
             return res.status(404).json({ message: 'No comment at this url' })
         }
