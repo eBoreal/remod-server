@@ -45,7 +45,6 @@ router.get('/boxes/:url', getUrlComments, (req, res) => {
 async function getUrlComments(req, res, next) {
     let comments;
     try {
-        console.log(req.params.url)
         comments = await Comment.findByUrl(req.params.url)
         if (comments.length == 0) {
             return res.status(404).json({ message: 'No comment at this url' })
