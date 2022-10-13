@@ -26,8 +26,6 @@ router.post('/postNew', checkUserLogin, async (req, res) => {
             // something wrong with user input
             res.status(400).json({ message: err.message })
         }
-    } else {
-        res.status(400).json({ message: "user not logged in" })
     }
 }) 
 
