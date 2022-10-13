@@ -74,5 +74,5 @@ Content-Type: application/json
 
 {
     "userId": "mongolito",
-    "passWord": "2345"
+    "passWord": "1234"
 }

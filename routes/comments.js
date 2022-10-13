@@ -1,27 +1,33 @@
 const express = require('express')
 const router = express.Router()
 const Comment = require('../models/comment')
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
 
 // # --------------- Main Routes --------------- # //
 
 // creating a comment 
-router.post('/postNew', async (req, res) => {
-    const comment = new Comment({
-        id: req.body.id,
-        url: req.body.url,
-        target: req.body.target,
-        boxId: req.body.boxId,
-        commentText: req.body.commentText,
-        author: req.body.author, 
-        timeStamp: req.body.timeStamp,
-        upvotes: req.body.upvotes
-    })
-    try {
-        const newComment = await comment.save()
-        res.status(201).json(newComment)
-    } catch (err) {
-        // something wrong with user input
-        res.status(400).json({ message: err.message })
+router.post('/postNew', checkUserLogin, async (req, res) => {
+    if (res.loggedIn) {
+        const comment = new Comment({
+            id: req.body.id,
+            url: req.body.url,
+            target: req.body.target,
+            boxId: req.body.boxId,
+            commentText: req.body.commentText,
+            author: res.userId, 
+            timeStamp: req.body.timeStamp,
+            upvotes: req.body.upvotes
+        })
+        try {
+            const newComment = await comment.save()
+            res.status(201).json(newComment)
+        } catch (err) {
+            // something wrong with user input
+            res.status(400).json({ message: err.message })
+        }
+    } else {
+        res.status(400).json({ message: "user not logged in" })
     }
 }) 
 
@@ -122,4 +128,27 @@ async function getComment(req, res, next) {
     next()
 }
 
+
+
+async function checkUserLogin(req, res, next) {
+    try {
+        const db_response = await User.findById(req.body.userId)
+        const user = db_response[0]
+        if (user){
+            if (await bcrypt.compare(req.body.passWord, user.passWord)) {
+                res.loggedIn = true
+                res.userId = user.userId
+            }
+            else {
+                res.status(404).json(
+                    { message: `Wrong password for user: ${req.body.userId}` })
+            }
+        } else {
+            res.status(404).json({ message: `No user with id: ${req.body.userId}` })
+        }
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+    next()
+}
 module.exports = router
