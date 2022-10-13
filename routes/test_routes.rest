@@ -1,8 +1,8 @@
-GET http://localhost:3000/comments
+GET http://13.38.128.167:3000/comments
 
 ###
 
-POST http://localhost:3000/comments
+POST http://localhost:3000/comments/postNew/
 Content-Type: application/json
 
 {
@@ -15,7 +15,7 @@ Content-Type: application/json
     },
     "boxId": "0000000",
     "commentText": "I am comment #1",
-    "author": "Emile Borel", 
+    "author": "eBoreal", 
     "timeStamp": "1664750827",
     "upvotes": "0"
 }
@@ -51,4 +51,28 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/comments/boxes/https%3A%2F%2Fvitalik.ca%2Fgeneral%2F2022%2F07%2F13%2Fnetworkstates.html
+GET http://localhost:3000/comments/getByUrl/https%3A%2F%2Fvitalik.ca%2Fgeneral%2F2022%2F07%2F13%2Fnetworkstates.html
+
+
+###
+
+POST http://localhost:3000/users/register
+Content-Type: application/json
+
+{
+    "userId": "ijhoi",
+    "passWord": "1234"
+}
+
+###
+
+GET http://localhost:3000/comments/getByAuthor/eBoreal
+
+###
+POST http://localhost:3000/users/login
+Content-Type: application/json
+
+{
+    "userId": "mongolito",
+    "passWord": "2345"
+}

@@ -5,7 +5,7 @@ const Comment = require('../models/comment')
 // # --------------- Main Routes --------------- # //
 
 // creating a comment 
-router.post('/', async (req, res) => {
+router.post('/postNew', async (req, res) => {
     const comment = new Comment({
         id: req.body.id,
         url: req.body.url,
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
 
 
 // Get all records
-router.get('/', async (req, res) => {
+router.get('/getAll', async (req, res) => {
     try {
         const comments = await Comment.find()
         res.json(comments)
@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
 })
 
 // Getting comments matching a specific url
-router.get('/boxes/:url', getUrlComments, (req, res) => {
+router.get('/getByUrl/:url', getUrlComments, (req, res) => {
     res.json(res.comments)
 })
 
@@ -57,16 +57,34 @@ async function getUrlComments(req, res, next) {
     next()
 }
 
+// get all comments from a user
+router.get('/getByAuthor/:userId', getUserComments, (req, res) => {
+    res.json(res.comments)
+})
 
+async function getUserComments(req, res, next) {
+    let comments;
+        try {
+            comments = await Comment.findByAuthor(req.params.userId)
+            if (comments.length == 0) {
+                return res.status(404).json({ message: `No comment for: ${req.params.userId}` })
+            }
+        } catch (err) {
+            return res.status(500).json({ message: err.message })
+        }   
+    
+        res.comments =  comments
+        next()
+}
 // # --------------- Comment Specific --------------- # //
 
 // Get a specific comment
-router.get('/:id', getComment, (req, res) => {
+router.get('/getById/:id', getComment, (req, res) => {
     res.json(res.comment)
 })
 
 // Updating a comment's upvotes
-router.patch('/:id', getComment, async (req, res) => {
+router.patch('/updateById/:id', getComment, async (req, res) => {
     if (req.body.upvotes != null) {
         res.comment.upvotes = req.body.upvotes
     }
@@ -79,7 +97,7 @@ router.patch('/:id', getComment, async (req, res) => {
 })
 
 // Deleting a comment
-router.delete('/:id', getComment, async (req, res) => {
+router.delete('/updateById/:id', getComment, async (req, res) => {
     try {
         await res.comment.remove()
         res.json({ message: 'Deleted Comment' })

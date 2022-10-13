@@ -26,7 +26,11 @@ const commentSchema = new mongoose.Schema({
 })
 
 commentSchema.statics.findByUrl = function (url) {
-    return this.find({ url: new RegExp(url+"$", "i")})
+    return this.find({ url: new RegExp(url+"$", "i") })
+}
+
+commentSchema.statics.findByAuthor = function (userId) {
+    return this.find({ author: new RegExp(userId+"$") })
 }
 
 // export schema as model

@@ -18,12 +18,21 @@ mongoose.connect(process.env.DB_DEV
   ).catch(err => console.log('Database not connected', err)
   );
 
-
 app.use(express.json())
 
 // routes
 const commentRouter = require('./routes/comments')
 app.use('/comments', commentRouter)
+
+const userRouter = require('./routes/users')
+app.use('/users', userRouter)
+
+// app.post('/login', passport.authenticate('local', {
+//   successMessage: true,
+//   failureMessage: true
+//   })
+// )
+
 
 
 app.listen(port, () => {
