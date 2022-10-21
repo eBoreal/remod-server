@@ -18,10 +18,12 @@ router.post('/register', async (req, res) => {
 
         // save it to database
         const newUser = await user.save()
-        res.status(201).json(newUser)
+        res.status(201).json({success:true})
 
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        if (err.code === 11000) res.status(422).json(
+            { success: false, message: `userId: ${req.body.userId} already exists` })
+        else res.status(400).json({ success: false, message: err.message })
     }
 }) 
 
@@ -29,7 +31,7 @@ router.post('/register', async (req, res) => {
 // log in existing user
 router.post('/login', checkUserLogin, (req, res) => {
     if (res.loggedIn) {
-        res.status(201).json(res.userId)
+        res.status(201).json({ success: true, message: res.userId })
     }
 })
 
@@ -45,13 +47,13 @@ async function checkUserLogin(req, res, next) {
             }
             else {
                 res.status(404).json(
-                    { message: `Wrong password for user: ${req.body.userId}` })
+                    { success: false, message: `Wrong password for user: ${req.body.userId}` })
             }
         } else {
-            res.status(404).json({ message: `No user with id: ${req.body.userId}` })
+            res.status(404).json({ success: false, message: `No user with id: ${req.body.userId}` })
         }
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        res.status(400).json({ success: false, message: err.message })
     }
     next()
 }

@@ -8,16 +8,18 @@ const bcrypt = require('bcrypt')
 
 // creating a comment 
 router.post('/postNew', checkUserLogin, async (req, res) => {
-    if (res.loggedIn) {
+    if (res.isLoggedIn) {
         const comment = new Comment({
             id: req.body.id,
             url: req.body.url,
             target: req.body.target,
             boxId: req.body.boxId,
-            commentText: req.body.commentText,
-            author: res.userId, 
+            text: req.body.text,
+            userId: res.userId, 
             timeStamp: req.body.timeStamp,
-            upvotes: req.body.upvotes
+            upvotes: req.body.upvotes,
+            rgb1: req.body.rgb1,
+            rgb2: req.body.rgb2
         })
         try {
             const newComment = await comment.save()
@@ -29,21 +31,25 @@ router.post('/postNew', checkUserLogin, async (req, res) => {
     }
 }) 
 
+// Getting comments matching a specific url
+router.get('/getByUrl/:url', getUrlComments, (req, res) => {
+    res.json(res.comments)
+})
 
 // Get all records
 router.get('/getAll', async (req, res) => {
     try {
         const comments = await Comment.find()
+        if (comments.length == 0) {
+            return res.status(404).json({ message: 'No comment in db' })
+        }
         res.json(comments)
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
 })
 
-// Getting comments matching a specific url
-router.get('/getByUrl/:url', getUrlComments, (req, res) => {
-    res.json(res.comments)
-})
+
 
 // middle.w to get single comment
 async function getUrlComments(req, res, next) {
@@ -62,14 +68,14 @@ async function getUrlComments(req, res, next) {
 }
 
 // get all comments from a user
-router.get('/getByAuthor/:userId', getUserComments, (req, res) => {
+router.get('/getByUser/:userId', getUserComments, (req, res) => {
     res.json(res.comments)
 })
 
 async function getUserComments(req, res, next) {
     let comments;
         try {
-            comments = await Comment.findByAuthor(req.params.userId)
+            comments = await Comment.findByUser(req.params.userId)
             if (comments.length == 0) {
                 return res.status(404).json({ message: `No comment for: ${req.params.userId}` })
             }
@@ -134,18 +140,18 @@ async function checkUserLogin(req, res, next) {
         const user = db_response[0]
         if (user){
             if (await bcrypt.compare(req.body.passWord, user.passWord)) {
-                res.loggedIn = true
+                res.isLoggedIn = true
                 res.userId = user.userId
             }
             else {
                 res.status(404).json(
-                    { message: `Wrong password for user: ${req.body.userId}` })
+                    { success: false, message: `Wrong password for user: ${req.body.userId}` })
             }
         } else {
-            res.status(404).json({ message: `No user with id: ${req.body.userId}` })
+            res.status(404).json({ success: false, message: `No user with id: ${req.body.userId}` })
         }
     } catch (err) {
-        res.status(400).json({ message: err.message })
+        res.status(400).json({ success: false, message: err.message })
     }
     next()
 }

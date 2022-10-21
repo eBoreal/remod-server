@@ -1,13 +1,20 @@
-GET http://13.38.128.167:3000/comments
+GET http://localhost:5000/api/
+
+###
+GET http://localhost:5000/api/comments/getAll
+
+###
+GET http://localhost:5000/api/comments/getByUser/eBoreal
+
 
 ###
 
-POST http://localhost:3000/comments/postNew/
+POST http://localhost:5000/api/comments/postNew/
 Content-Type: application/json
 
 {
-    "userId": "azdaddaz",
-    "passWord": "1234",
+    "userId": "a",
+    "passWord": "a",
     "id": "0000000",
     "url": "https://vitalik.ca/general/2022/07/13/networkstates.html",
     "target": {
@@ -16,15 +23,17 @@ Content-Type: application/json
         "id": ""
     },
     "boxId": "0000000",
-    "commentText": "I am comment #1",
+    "text": "I am comment #1",
     "timeStamp": "1664750827",
-    "upvotes": "0"
+    "upvotes": "0",
+    "rgb1": [1,2,3],
+    "rgb2": [1,2,3]
 }
 
 
 ### 
 
-GET http://localhost:3000/comments/633ed6fd694fc159434581e5
+GET http://localhost:5000/api/comments/getAll
 
 ###
 

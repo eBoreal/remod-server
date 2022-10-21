@@ -5,33 +5,34 @@ const mongoose=require('mongoose');
 
 const express=require('express');
 const app=express()
-const port=3000;
+const port=5000;
 
 // configure our express instance with some body-parser settings
 // including handling JSON data
 app.use(bodyParser.json());
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
 // connect to database: DB_PROD or DB_DEV
-mongoose.connect(process.env.DB_DEV
+mongoose.connect(process.env.DB_PROD
   ).then(() => console.log('Database Connected')
   ).catch(err => console.log('Database not connected', err)
   );
 
-app.use(express.json())
 
-// routes
+// Website routes
+app.get('/api', (req, res) => {
+  res.status(201).json("Welcome to Remod API")
+})
+
+// API routes
 const commentRouter = require('./routes/comments')
-app.use('/comments', commentRouter)
+app.use('/api/comments', commentRouter)
 
 const userRouter = require('./routes/users')
-app.use('/users', userRouter)
+app.use('/api/users', userRouter)
 
-// app.post('/login', passport.authenticate('local', {
-//   successMessage: true,
-//   failureMessage: true
-//   })
-// )
 
 
 

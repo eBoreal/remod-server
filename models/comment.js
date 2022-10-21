@@ -10,14 +10,16 @@ const targetSchema = new mongoose.Schema({
 
 // schema
 const commentSchema = new mongoose.Schema({
-    id: Number,
+    id: String,
     url: String,
     target: targetSchema,
-    boxId: Number,
-    commentText: String,
-    author: String, 
+    boxId: String,
+    text: String,
+    userId: String, 
     timeStamp: Date,
     upvotes: Number,
+    rgb1: { type : Array , "default" : [] },
+    rgb2: { type : Array , "default" : [] },
     createdAt: {
         type: Date,
         immutable: true, 
@@ -29,8 +31,8 @@ commentSchema.statics.findByUrl = function (url) {
     return this.find({ url: new RegExp(url+"$", "i") })
 }
 
-commentSchema.statics.findByAuthor = function (userId) {
-    return this.find({ author: new RegExp(userId+"$") })
+commentSchema.statics.findByUser = function (userId) {
+    return this.find({ userId: new RegExp(userId+"$") })
 }
 
 // export schema as model
