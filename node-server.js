@@ -6,7 +6,7 @@ const mongoose=require('mongoose');
 
 const express=require('express');
 const app=express()
-const port=80;
+const port=5000;
 
 // configure our express instance with some body-parser settings
 // including handling JSON data
@@ -22,13 +22,13 @@ mongoose.connect(process.env.DB_PROD
 
 
 // create a GET route
-app.get('/', (req, res) => res.status(201).json("Welcome to Remod API")
-)
+// app.get('/', (req, res) => res.status(201).json("Welcome to Remod API")
+// )
 
 app.use(express.static(path.join(__dirname, "..", "remod-client", "build")));
 // app.use(express.static("public"));
 // create a GET route
-app.get('/remod', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, "..", "remod-client", "build", "index.html"));
 }
 )
