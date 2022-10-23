@@ -1,10 +1,7 @@
-GET http://localhost:5000/api/
-
-###
 GET http://localhost:5000/api/comments/getAll
 
 ###
-GET http://localhost:5000/api/comments/getByUser/eBoreal
+GET http://13.38.128.167:5000/api/comments/getByUser/eBoreal
 
 
 ###

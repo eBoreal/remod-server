@@ -43,7 +43,7 @@ router.get('/getAll', async (req, res) => {
         if (comments.length == 0) {
             return res.status(404).json({ message: 'No comment in db' })
         }
-        res.json(comments)
+        res.status(201).json(comments)
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
@@ -69,7 +69,7 @@ async function getUrlComments(req, res, next) {
 
 // get all comments from a user
 router.get('/getByUser/:userId', getUserComments, (req, res) => {
-    res.json(res.comments)
+    res.status(201).json(res.comments)
 })
 
 async function getUserComments(req, res, next) {

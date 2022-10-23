@@ -1,4 +1,5 @@
 require('dotenv').config()
+const path = require('path')
 const bodyParser=require('body-parser');
 
 const mongoose=require('mongoose');
@@ -20,11 +21,30 @@ mongoose.connect(process.env.DB_PROD
   ).catch(err => console.log('Database not connected', err)
   );
 
+// create a GET route
+app.get('/', (req, res) => res.status(201).json("Welcome to Remod API")
+)
+
+app.use(express.static(path.join(__dirname, "..", "remod-client", "build")));
+// app.use(express.static("public"));
+// create a GET route
+app.get('/remod', (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "remod-client", "build", "index.html"));
+}
+)
+
+// app.use((req, res, next) => {
+//   res.sendFile(path.join(__dirname, "..", "remod-client", "build", "index.html"));
+// });
+
+
+// app.get('/remod',function(req,res) {
+//     res.sendFile(path);
+//   });
+
 
 // Website routes
-app.get('/api', (req, res) => {
-  res.status(201).json("Welcome to Remod API")
-})
+app.get('/api', (req, res) => res.status(201).json("Welcome to Remod API"))
 
 // API routes
 const commentRouter = require('./routes/comments')
