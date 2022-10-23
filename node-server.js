@@ -6,7 +6,7 @@ const mongoose=require('mongoose');
 
 const express=require('express');
 const app=express()
-const port=5000;
+const port=80;
 
 // configure our express instance with some body-parser settings
 // including handling JSON data
@@ -14,12 +14,12 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
 // connect to database: DB_PROD or DB_DEV
 mongoose.connect(process.env.DB_PROD
   ).then(() => console.log('Database Connected')
   ).catch(err => console.log('Database not connected', err)
   );
+
 
 // create a GET route
 app.get('/', (req, res) => res.status(201).json("Welcome to Remod API")
